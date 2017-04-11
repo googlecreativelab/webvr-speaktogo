@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<title>Speak to Go - Twixt</title>
+
+	<style>
+	*{ box-sizing: border-box; margin: 0; padding: 0; font-size: 1vw; line-height: 1.4em;}
+	body{ font-family: robot, sans-serif; padding: 2em;}
+	h1{ font-family: bitter, serif; font-size: 2em;}
+	p{ margin-bottom: 2em; }
+	ul{ list-style-type: none; line-height: 3em; }
+	li{ border: 1px solid #808080; border-radius: .5em; display: inline; padding: .5em; cursor:pointer; }
+	li:hover{ color: white; background-color: #808080; }
+	@media screen and (max-width: 800px){
+		*{font-size: 4vw;}
+	}
+	#canvas{ position: absolute; left: 0; top: 0; right: 0; bottom:0; width: 100%; height: 100%; }
+	</style>
+	<link href="https://fonts.googleapis.com/css?family=Bitter|Roboto" rel="stylesheet">
+
+	<script src="js/Twixt.js" ></script>
+
+</head>
+
+<body>
+
+	<h1>Twixt</h1>
+	<p>Click on the screen. The dot will move to the clicked position in 500ms, stay there for 500ms and then go back to the center of the screen in 1s.</p>
+
+	<canvas id="canvas" ></canvas>
+
+</body>
+
+<script>
+
+let c = document.getElementById( 'canvas' );
+let ctx = c.getContext( '2d' );
+
+let x = Twixt.create( 0, 'InOutQuint' );
+let y = Twixt.create( 0, 'InOutQuint' );
+
+window.addEventListener( 'click', e => {
+
+	x.to( e.pageX * window.devicePixelRatio, 500 ).then( () => x.to( .5 * c.width, 1000, null, 500 ) );
+	y.to( e.pageY * window.devicePixelRatio, 500 ).then( () => y.to( .5 * c.height, 1000, null, 500 ) );
+
+});
+
+window.addEventListener( 'resize', onWindowResize );
+onWindowResize();
+
+function onWindowResize() {
+
+	const dPR = window.devicePixelRatio;
+	c.width = window.innerWidth * dPR;
+	c.height = window.innerHeight * dPR;
+
+}
+
+function animate() {
+
+	c.width = c.width;
+	ctx.beginPath();
+	ctx.arc( x.value, y.value, 5 * window.devicePixelRatio, 0, 2 * Math.PI );
+	ctx.fill();
+
+	requestAnimationFrame( animate );
+
+}
+
+animate();
+
+</script>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8"">
+	<title>Speak to Go - Soundboard</title>
+
+	<style>
+	*{ box-sizing: border-box; margin: 0; padding: 0; font-size: 1vw; line-height: 1.4em;}
+	body{ font-family: robot, sans-serif; padding: 2em;}
+	h1{ font-family: bitter, serif; font-size: 2em;}
+	p{ margin-bottom: 2em; }
+	ul{ list-style-type: none; line-height: 3em; }
+	li{ border: 1px solid #808080; border-radius: .5em; display: inline; padding: .5em; cursor:pointer; }
+	li:hover{ color: white; background-color: #808080; }
+	@media screen and (max-width: 800px){
+		*{font-size: 4vw;}
+	}
+	</style>
+	<link href="https://fonts.googleapis.com/css?family=Bitter|Roboto" rel="stylesheet">
+
+	<script src="js/Soundboard.js" ></script>
+
+</head>
+
+<body>
+
+	<h1>Soundboard</h1>
+	<p>The sounds are loaded automatically, press any of the buttons to play the sound.</p>
+
+	<p><ul>
+		<li data-src="success" ></li>
+		<li data-src="success-1" ></li>
+		<li data-src="success-2" ></li>
+		<li data-src="ready" ></li>
+		<li data-src="failure" ></li>
+		<li data-src="error" ></li>
+
+	</ul></p>
+
+	<p>Sound files from <a href="http://www.freesound.org/" >Freesound.org</a>:<br/>
+	<a href="http://www.freesound.org/people/grunz/sounds/109663/" >success_low.wav</a>, <a href="http://www.freesound.org/people/fins/sounds/171671/" >success 1</a>, <a href="http://www.freesound.org/people/fins/sounds/171670/" >success 2</a>, <a href="http://www.freesound.org/people/pan14/sounds/263133/" >tone beep.wav</a>, <a href="http://www.freesound.org/people/rhodesmas/sounds/342756/">Failure 01</a>, <a href="http://www.freesound.org/people/distillerystudio/sounds/327735/" >Error_04.wav</a></p>
+
+
+</body>
+
+<script>
+
+let src = {};
+[].map.call( document.querySelectorAll( '[data-src]' ), i => {
+	let s = i.getAttribute( 'data-src' );
+	src[ s ] = `sounds/${s}`;
+	i.textContent = s;
+	i.addEventListener( 'click', e => {
+		soundboard.play( s );
+		e.preventDefault();
+	})
+})
+
+let soundboard = new SoundBoard( src );
+
+</script>
+
+</html>

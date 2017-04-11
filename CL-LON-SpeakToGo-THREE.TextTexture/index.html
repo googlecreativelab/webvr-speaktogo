@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<title>Speak to Go - THREE.TextTexture</title>
+
+	<style>
+	*{ box-sizing: border-box; margin: 0; padding: 0; font-size: 1vw; line-height: 1.4em;}
+	body{ font-family: robot, sans-serif; padding: 2em;}
+	h1{ font-family: bitter, serif; font-size: 2em;}
+	p{ margin-bottom: 2em; }
+	ul{ list-style-type: none; line-height: 3em; }
+	li{ border: 1px solid #808080; border-radius: .5em; display: inline; padding: .5em; cursor:pointer; }
+	li:hover{ color: white; background-color: #808080; }
+	@media screen and (max-width: 800px){
+		*{font-size: 4vw;}
+	}
+	#canvas{ position: absolute; left: 0; top: 0; right: 0; bottom:0; width: 100%; height: 100%; }
+	</style>
+	<link href="https://fonts.googleapis.com/css?family=Bitter|Roboto" rel="stylesheet">
+
+	<script src="third_party/three.min.js" ></script>
+	<script src="third_party/OrbitControls.js" ></script>
+	<script src="js/Text.js" ></script>
+
+</head>
+
+<body>
+
+	<h1>Text</h1>
+	<p></p>
+
+	<canvas id="canvas" ></canvas>
+
+</body>
+
+<script>
+
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+let renderer = new THREE.WebGLRenderer( { canvas: document.getElementById( 'canvas' ) });
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setClearColor( 0xdddddd, 1 )
+renderer.setSize( window.innerWidth, window.innerHeight );
+
+let controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+let text = new Text( renderer, 1024, 512 );
+scene.add( text.mesh );
+
+camera.position.z = 2.5;
+
+function render() {
+
+	requestAnimationFrame( render );
+
+	controls.update();
+	renderer.render( scene, camera );
+
+}
+
+render();
+
+const sentences = [
+
+	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Immo videri fortasse. Torquatus, is qui consul cum Cn. Falli igitur possumus. Pauca mutat vel plura sane; Duo Reges: constructio interrete. Beatus sibi videtur esse moriens.',
+
+	'Peccata paria. Que Manilium, ab iisque M. Aliter homines, aliter philosophos loqui putas oportere? Dat enim intervalla et relaxat. Sed virtutem ipsam inchoavit, nihil amplius. Restatis igitur vos;',
+
+	'Nemo igitur esse beatus potest. Nos commodius agimus. Velut ego nunc moveor.',
+
+	'Equidem, sed audistine modo de Carneade? Quo tandem modo? Compensabatur, inquit, cum summis doloribus laetitia. Frater et T.',
+
+	'Poterat autem inpune; Utram tandem linguam nescio?',
+
+	'Tria genera bonorum; Respondeat totidem verbis. Quid sequatur, quid repugnet, vident.',
+
+	'Quod totum contra est. Quod cum dixissent, ille contra. Sed haec in pueris; Utilitatis causa amicitia est quaesita. Aufert enim sensus actionemque tollit omnem. Quid ad utilitatem tantae pecuniae? Deprehensus omnem poenam contemnet. Tibi hoc incredibile, quod beatissimum.',
+
+	'Ne discipulum abducam, times. Ille incendat?',
+
+	'Estne, quaeso, inquam, sitienti in bibendo voluptas? Quo igitur, inquit, modo? Eademne, quae restincta siti? Utilitatis causa amicitia est quaesita. Quam ob rem tandem, inquit, non satisfacit? ',
+
+	'Sed residamus, inquit, si placet. Certe non potest. Quid ergo? Deinde dolorem quem maximum? Immo alio genere; Illa tamen simplicia, vestra versuta. Sequitur disserendi ratio cognitioque naturae; ',
+
+	'Sint ista Graecorum; Aliter autem vobis placet. Sed residamus, inquit, si placet. At hoc in eo M. Gerendus est mos, modo recte sentiat.',
+
+	'Quare attende, quaeso. Bonum integritas corporis: misera debilitas. At hoc in eo M. An eiusdem modi? Bestiarum vero nullum iudicium puto. ',
+
+	'Nunc vides, quid faciat. Primum quid tu dicis breve? Hic ambiguo ludimur. ',
+
+	'Restatis igitur vos; Negare non possum. Illi enim inter se dissentiunt. Sed hoc sane concedamus. Quam nemo umquam voluptatem appellavit, appellat; Quo tandem modo? ',
+
+	'Quodsi ipsam honestatem undique pertectam atque absolutam. Itaque his sapiens semper vacabit. ',
+
+	'Verum hoc idem saepe faciamus. Stoicos roga. A mene tu? Hoc mihi cum tuo fratre convenit. ',
+
+	'Fortemne possumus dicere eundem illum Torquatum? Deinde dolorem quem maximum? Eademne, quae restincta siti? Sullae consulatum? Tibi hoc incredibile, quod beatissimum. Quid ergo? ',
+
+	'At multis se probavit. Sed fac ista esse non inportuna; Non est igitur voluptas bonum. Addidisti ad extremum etiam indoctum fuisse. ',
+
+	'Equidem, sed audistine modo de Carneade? Bonum integritas corporis: misera debilitas. Quare attende, quaeso. Primum quid tu dicis breve? Idem adhuc; Ubi ut eam caperet aut quando?',
+
+	'Cyrenaici quidem non recusant; Satis est ad hoc responsum. Res enim concurrent contrariae. Tanta vis admonitionis inest in locis; Inde igitur, inquit, ordiendum est. Tollenda est atque extrahenda radicitus. '
+
+];
+
+function update() {
+
+	text.set( sentences[ ~~ ( Math.random() * sentences.length ) ] );
+
+}
+
+window.addEventListener( 'keyup', e => {
+	if( e.keyCode === 32 ) update();
+});
+
+update();
+
+window.addEventListener( 'resize', onWindowResize, false );
+
+function onWindowResize() {
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+onWindowResize();
+
+</script>
+
+</html>
