@@ -1,6 +1,7 @@
 # THREE.TextTexture
 
 A wrapper of THREE.CanvasTexture to easily draw text, used for setting up UIs in VR quickly.
+
 This is not an official Google product.
 
 #### How to use ####
