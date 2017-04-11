@@ -1,6 +1,7 @@
 # Twixt
 
-A very straightforward tweening library, with Promises
+A very straightforward tweening library, with Promises.
+
 This is not an official Google product.
 
 #### How to use ####
